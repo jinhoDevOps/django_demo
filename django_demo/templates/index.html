@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Book Management</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+      label {
+        width: 80px;
+        display: inline-block;
+      }
+      .container {
+        padding-left: 20px; /* 왼쪽 여백 설정 */
+      }
+      footer {
+        position: fixed;
+        bottom: 0;
+        width: 100%;
+        text-align: center;
+        background-color: #f1f1f1; /* 배경색을 넣을 수 있습니다. */
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Book List</h1>
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Title</th>
+            <th>Author</th>
+            <th>Price</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for book in books %}
+          <tr>
+            <td>{{ book.id }}</td>
+            <td>{{ book.title }}</td>
+            <td>{{ book.author }}</td>
+            <td>{{ book.price }}</td>
+            <td>
+              <button onclick="deleteBook({{ book.id }})">Delete</button>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+
+      <!--<h2>Add a New Book</h2>-->
+      <!--<form id="addBookForm">-->
+      <!--    Title:  <input type="text" id="title"><br>-->
+      <!--    Author: <input type="text" id="author"><br>-->
+      <!--    Price:  <input type="number" id="price"><br>-->
+      <!--    <button type="button" onclick="addBook()">Add</button>-->
+      <!--</form>-->
+
+      <!--<h2>Update a Book</h2>-->
+      <!--<form id="updateBookForm">-->
+      <!--    ID:     <input type="number" id="updateId"><br>-->
+      <!--    Title:  <input type="text" id="updateTitle"><br>-->
+      <!--    Author: <input type="text" id="updateAuthor"><br>-->
+      <!--    Price:  <input type="number" id="updatePrice"><br>-->
+      <!--    <button type="button" onclick="updateBook()">Update</button>-->
+      <!--</form>-->
+
+      <table>
+        <thead>
+          <tr>
+            <th>Add a New Book</th>
+            <th>Update a Book</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>
+              <form id="addBookForm">
+                <label for="title">Title:</label>
+                <input type="text" id="title" /><br />
+                <label for="author">Author:</label>
+                <input type="text" id="author" /><br />
+                <label for="price">Price:</label>
+                <input type="number" id="price" /><br />
+                <button type="button" onclick="addBook()">Add</button>
+              </form>
+            </td>
+            <td>
+              <form id="updateBookForm">
+                <label for="updateId">ID:</label>
+                <input type="number" id="updateId" /><br />
+                <label for="updateTitle">Title:</label>
+                <input type="text" id="updateTitle" /><br />
+                <label for="updateAuthor">Author:</label>
+                <input type="text" id="updateAuthor" /><br />
+                <label for="updatePrice">Price:</label>
+                <input type="number" id="updatePrice" /><br />
+                <button type="button" onclick="updateBook()">Update</button>
+              </form>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <img src="{% static 'plz.jpeg' %}" alt="[please]" />
+
+      <script>
+        function addBook() {
+          const bookData = {
+            title: $("#title").val(),
+            author: $("#author").val(),
+            price: $("#price").val(),
+          };
+
+          $.ajax({
+            type: "POST",
+            url: "/add",
+            contentType: "application/json",
+            data: JSON.stringify(bookData),
+            success: function (response) {
+              alert(response);
+              location.reload();
+            },
+            error: function (error) {
+              alert("Error: " + error.responseText);
+            },
+          });
+        }
+
+        function updateBook() {
+          const bookData = {
+            id: $("#updateId").val(),
+            title: $("#updateTitle").val(),
+            author: $("#updateAuthor").val(),
+            price: $("#updatePrice").val(),
+          };
+
+          $.ajax({
+            type: "POST",
+            url: "/update/" + bookData.id,
+            contentType: "application/json",
+            data: JSON.stringify(bookData),
+            success: function (response) {
+              alert(response);
+              location.reload();
+            },
+            error: function (error) {
+              alert("Error: " + error.responseText);
+            },
+          });
+        }
+
+        function deleteBook(id) {
+          $.ajax({
+            type: "POST",
+            url: "/delete/" + id,
+            success: function (response) {
+              alert(response);
+              location.reload();
+            },
+            error: function (error) {
+              alert("Error: " + error.responseText);
+            },
+          });
+        }
+      </script>
+    </div>
+    <footer>Powered by Django REST framework</footer>
+  </body>
+</html>
