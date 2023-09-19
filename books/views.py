@@ -45,6 +45,7 @@ from django.http import JsonResponse
 from .models import Book
 
 #create
+
 def add_book(request):
     if request.method == 'POST':
         title = request.POST.get('title')

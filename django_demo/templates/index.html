@@ -154,7 +154,7 @@
         function deleteBook(id) {
           $.ajax({
             type: "POST",
-            url: "/delete/" + id,
+            url: "/delete/" + id +"/",
             success: function (response) {
               alert(response);
               location.reload();
