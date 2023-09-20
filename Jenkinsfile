@@ -21,6 +21,7 @@ pipeline {
 
         stage('Install Dependencies') {  // 의존성을 설치하는 단계
             steps {
+                sh 'apt install -y python3 python3-pip'  // Linux 패키지 의존성을 설치합니다.
                 sh 'pip install -r requirements.txt'  // 파이썬 의존성을 설치합니다.
             }
         }
