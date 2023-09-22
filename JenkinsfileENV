@@ -7,7 +7,7 @@ pipeline {
     environment {
         DJANGO_SETTINGS_MODULE = 'django_demo.settings'
 
-        MY_DB_HOST = 'mysql.db.com:192.168.123.163' //for docker run
+        MY_DB_HOST = 'mysql.db.com:192.168.123.163'
         DB_PASSWORD = credentials('my-db-password')
         // DB_HOST = credentials('my-db-host')
         // DB_PORT = credentials('my-db-port')
@@ -68,7 +68,7 @@ pipeline {
                 // sh 'export DB_PORT = $(echo $DB_PORT)'
                 sh 'export DB_PASSWORD=$(echo $DB_PASSWORD)'
                 sh 'export SECRET_KEY=$(echo $SECRET_KEY)'
-                sh 'export MY_DB_HOST=$(echo $MY_DB_HOST)'
+                sh 'export MY_DB_HOST=192.168.123.163'
                 //  docker run -d -p 8000:8000 --add-host $MY_DB_HOST -e "DB_PASSWORD=$DB_PASSWORD" --name django django_demo
                 sh '''
                 docker stop django || true
