@@ -30,3 +30,32 @@ DB_PORT = 'your-database-port'
 
 이렇게 설정한 후 `settings.py` 파일에서 `from .secrets import *` 문을 추가하여 이 변수들을 사용할 수 있습니다. - 추가되어있음
 
+## 사전 작업 - jenkinsfileENV 버전
+
+Jenkins에서 크레덴셜을 추가하는 과정은 다음과 같습니다:
+
+### Jenkins 대시보드에서 크레덴셜 추가하기
+
+1. **Jenkins 대시보드로 이동**: Jenkins 서버에 로그인한 후 대시보드로 이동합니다.
+
+2. **'Manage Credentials' 선택**: 'Manage Jenkins' 페이지에서 'Manage Credentials'를 찾아 클릭합니다.
+
+4. **도메인 선택, 추가**: '(global)' 도메인을 선택하고, 'Add Credentials' 버튼을 클릭합니다.
+
+7. **크레덴셜 정보 입력**: 해당하는 필드에 크레덴셜 정보를 입력합니다. 예를 들어, 'Username'과 'Password' 필드에 각각의 값을 입력합니다.
+
+8. **ID 설정**: 크레덴셜에 고유한 ID를 부여할 수 있습니다. 이 ID는 Jenkinsfile에서 `credentials('ID')` 형태로 참조됩니다. `'my-db-password'`와 `'my-django-secret-key'`를 ID로 설정합니다.
+
+### Jenkinsfile에서 크레덴셜 사용하기
+
+Jenkinsfile에서는 `environment` 섹션에서 크레덴셜을 사용할 수 있습니다. 예를 들어:
+
+```groovy
+environment {
+    DB_PASSWORD = credentials('my-db-password')
+    SECRET_KEY = credentials('my-django-secret-key')
+}
+```
+여기서 `'my-db-password'`와 `'my-django-secret-key'`는 Jenkins에서 설정한 크레덴셜의 ID입니다.
+
+=
