@@ -6,6 +6,7 @@ pipeline {
     // 환경 변수 설정
     environment {
         DJANGO_SETTINGS_MODULE = 'django_demo.settings'
+        MY_DB_HOST = 'mysql.db.com:192.168.123.163'
     }
 
     triggers {
@@ -52,7 +53,7 @@ pipeline {
                 sh '''
                 docker stop django_demo || true
                 docker rm django_demo || true
-                docker run -d -p 8000:8000 --add-host mysql.db.com:192.168.123.163 --name django_demo django_demo
+                docker run -d -p 8000:8000 --add-host $MY_DB_HOST --name django_demo django
                 '''
             }
         }
