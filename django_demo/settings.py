@@ -153,12 +153,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
-STATIC_URL = 'static/'
-# 이 설정은 개발 중에 추가적인 정적 파일 디렉터리를 지정합니다.
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, "static"),
-    # '/var/www/static/',  # 예를 들어, 이렇게 다른 경로를 추가할 수도 있습니다.
-]
+STATIC_URL = '/static/'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
