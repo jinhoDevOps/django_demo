@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
 from pathlib import Path
+import os
 # from .secrets import *
 try:
     from .secrets import *
@@ -21,7 +22,6 @@ try:
 except ImportError:
     pass
 # setting
-import os
 
 # settings.py
 # 이렇게 하면, secrets.py 파일이 존재하면 그 값을 사용하고, 환경 변수가 설정되어 있으면 그 값을 사용하게 됩니다. 
