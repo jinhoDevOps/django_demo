@@ -20,11 +20,12 @@ except ImportError:
 import os
 
 # settings.py
-
-DB_PASSWORD = os.environ.get('DB_PASSWORD')
+# 이렇게 하면, secrets.py 파일이 존재하면 그 값을 사용하고, 환경 변수가 설정되어 있으면 그 값을 사용하게 됩니다. 
+# 두 가지 중 어느 것도 없으면 에러가 발생하므로, 적절한 디폴트 값을 설정해 주는 것이 좋습니다.
+DB_PASSWORD = os.environ.get('DB_PASSWORD',DB_PASSWORD)
 # DB_HOST = os.environ.get('DB_HOST')
 # DB_PORT = os.environ.get('DB_PORT')
-SECRET_KEY = os.environ.get('SECRET_KEY')
+SECRET_KEY = os.environ.get('SECRET_KEY',SECRET_KEY)
 DEBUG = False
 
 # DB
