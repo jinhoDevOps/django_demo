@@ -24,18 +24,7 @@ pipeline {
                 checkout([$class: 'GitSCM', branches: [[name: '*/main']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[url: 'https://github.com/jinhoDevOps/django_demo.git']]])
             }
         }
-        // Jenkins에서 설정한 크레덴셜
-        stage('Initialize Environment Variables') {
-            steps {
-                script {
-                    // sh 'export DB_HOST = $(echo $DB_HOST)'
-                    // sh 'export DB_PORT = $(echo $DB_PORT)'
-                    sh 'export DB_PASSWORD=$(echo $DB_PASSWORD)'
-                    sh 'export SECRET_KEY=$(echo $SECRET_KEY)'
-                    
-                }
-            }
-        }
+
         // pip3 install --no-cache-dir -r requirements.txt 대신 직접명시
         stage('Install Python Dependencies') {  // 파이썬 의존성을 설치하는 단계
             steps {
@@ -66,10 +55,16 @@ pipeline {
 
         stage('Deploy to Docker Container') {  // 도커 컨테이너에 배포하는 단계
                 steps {
+                // Jenkins에서 설정한 크레덴셜
+                // sh 'export DB_HOST = $(echo $DB_HOST)'
+                // sh 'export DB_PORT = $(echo $DB_PORT)'
+                sh 'export DB_PASSWORD=$(echo $DB_PASSWORD)'
+                sh 'export SECRET_KEY=$(echo $SECRET_KEY)'
+                //  docker run -d -p 8000:8000 --add-host $MY_DB_HOST -e "DB_PASSWORD=$DB_PASSWORD" --name django django_demo
                 sh '''
                 docker stop django || true
                 docker rm django || true
-                docker run -d -p 8000:8000 --add-host $MY_DB_HOST -e "DB_PASSWORD=$DB_PASSWORD" --name django django_demo
+                docker-compose up -d
                 '''
             }
         }

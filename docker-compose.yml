@@ -1,0 +1,18 @@
+#도커컴포즈
+
+version: '3'
+
+services:
+  django_app:
+    image: django_demo
+    ports:
+      - "8000:8000"
+    container_name: django
+    hostname: django
+    environment:
+      - DB_PASSWORD=${DB_PASSWORD}
+      - SECRET_KEY=${SECRET_KEY}
+      - TZ=Asia/Seoul
+    volumes:
+    - /sys/fs/cgroup:/sys/fs/cgroup:ro
+    restart: always  
