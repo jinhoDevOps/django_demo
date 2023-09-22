@@ -17,11 +17,17 @@ try:
 except ImportError:
     pass
 # setting
-SECRET_KEY = 'django-insecure-y-7wd&3fyrhh#-#@&iua8si(sv7mg^mm%a)8u(rse(9s0fk@nw'
+import os
+
+# settings.py
+
+DB_PASSWORD = os.environ.get('DB_PASSWORD')
+# DB_HOST = os.environ.get('DB_HOST')
+# DB_PORT = os.environ.get('DB_PORT')
+SECRET_KEY = os.environ.get('SECRET_KEY')
 DEBUG = False
 
 # DB
-DB_PASSWORD = 'Ns@m192!'
 DB_HOST = 'mysql.db.com'
 DB_PORT = '13306'
 
