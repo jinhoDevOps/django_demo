@@ -53,7 +53,7 @@ pipeline {
                 sh '''
                 docker stop django_demo || true
                 docker rm django_demo || true
-                docker run -d -p 8000:8000 --add-host $MY_DB_HOST --name django_demo django
+                docker run -d -p 8000:8000 --add-host $MY_DB_HOST --name django django_demo 
                 '''
             }
         }
