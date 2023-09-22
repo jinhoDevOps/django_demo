@@ -56,8 +56,8 @@ pipeline {
         stage('Deploy to Docker Container') {  // 도커 컨테이너에 배포하는 단계
                 steps {
                 sh '''
-                docker stop django_demo || true
-                docker rm django_demo || true
+                docker stop django || true
+                docker rm django || true
                 docker run -d -p 8000:8000 --add-host $MY_DB_HOST --name django_demo django_demo
                 '''
             }
