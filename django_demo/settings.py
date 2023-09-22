@@ -11,7 +11,20 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
 from pathlib import Path
-from .secrets import *
+# from .secrets import *
+try:
+    from .secrets import *
+except ImportError:
+    pass
+# setting
+SECRET_KEY = 'django-insecure-y-7wd&3fyrhh#-#@&iua8si(sv7mg^mm%a)8u(rse(9s0fk@nw'
+DEBUG = False
+
+# DB
+DB_PASSWORD = 'Ns@m192!'
+DB_HOST = 'mysql.db.com'
+DB_PORT = '13306'
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -23,8 +36,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: don't run with debug turned on in production!
 # >>>>>>>>>>>>> move to `secrets.py`
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['192.168.123.163','localhost', '127.0.0.1','211.221.173.229','211.221.173.228']
 
+import ipaddress
+# CIDR 표기법을 사용하여 특정 IP 범위에 대한 접근을 허용
+for ip in ipaddress.IPv4Network('192.168.123.0/24'):
+    ALLOWED_HOSTS.append(str(ip))
 
 # Application definition
 
