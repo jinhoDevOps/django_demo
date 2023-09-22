@@ -10,7 +10,7 @@ services:
     container_name: django
     hostname: django
     extra_hosts:
-      - "my_db_host:${MY_DB_HOST}"
+      - "${MY_DB_HOST}"
     environment:
       - DB_PASSWORD=${DB_PASSWORD}
       - SECRET_KEY=${SECRET_KEY}
