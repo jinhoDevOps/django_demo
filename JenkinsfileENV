@@ -39,7 +39,7 @@ pipeline {
         stage('Install Docker Compose') { //docker-compose를 설치하는 단계
             steps {
                 sh '''
-                apt-get install -y docker-compose
+                apt-get install -y containerd.io docker-compose-plugin
                 '''
             }
         }
