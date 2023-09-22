@@ -17,9 +17,17 @@
         position: fixed;
         bottom: 0;
         width: 100%;
+        margin-top: 9px;
         text-align: center;
         background-color: #f1f1f1; /* 배경색을 넣을 수 있습니다. */
       }
+      img {
+        top: 50%;
+        left: 50%;
+        margin-top: 32px;
+        margin-left: 32px;
+
+       }
     </style>
   </head>
   <body>
@@ -104,6 +112,7 @@
         </tbody>
       </table>
       <img src="{% static 'plz.jpg' %}" alt="[please]" />
+      <img src="https://kr.object.ncloudstorage.com/test-jhk/obj-plz.jpg" alt="[obj-img]" />
 
       <script>
         function addBook() {
