@@ -42,7 +42,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: don't run with debug turned on in production!
 # >>>>>>>>>>>>> move to `secrets.py`
 
-ALLOWED_HOSTS = ['192.168.123.163','localhost', '127.0.0.1','211.221.173.229','211.221.173.228']
+ALLOWED_HOSTS = ['localhost', '127.0.0.1','211.221.173.229','211.221.173.228',]
 
 import ipaddress
 # CIDR 표기법을 사용하여 특정 IP 범위에 대한 접근을 허용
@@ -153,6 +153,11 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
 STATIC_URL = 'static/'
+# 이 설정은 개발 중에 추가적인 정적 파일 디렉터리를 지정합니다.
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, "static"),
+    # '/var/www/static/',  # 예를 들어, 이렇게 다른 경로를 추가할 수도 있습니다.
+]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
