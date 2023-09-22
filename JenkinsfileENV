@@ -36,6 +36,13 @@ pipeline {
                 '''
             }
         }
+        stage('Install Docker Compose') { //docker-compose를 설치하는 단계
+            steps {
+                sh '''
+                apt-get install -y docker-compose
+                '''
+            }
+        }
 
         stage('Run Unit Tests') {  // 유닛 테스트를 실행하는 단계
             steps {
@@ -46,6 +53,7 @@ pipeline {
                 '''
             }
         }
+
 
         stage('Build Docker Image') {  // 도커 이미지를 빌드하는 단계
             steps {
