@@ -261,7 +261,7 @@ Jenkins에서 환경 변수를 설정하는 방법은 여러 가지가 있습니
    민감한 정보의 경우 Jenkins의 Credentials Plugin을 사용하여 안전하게 저장하고, 이를 환경 변수로 불러올 수 있습니다.
 
 ### Django - MySQL 연결 오류 
-### 문제 상황
+### 문제 상황#1
 Docker와 Django를 사용하여 애플리케이션을 배포하는 과정에서 문제가 발생할 수 있습니다. 특히, Docker Compose를 사용하지 않고 독립적으로 Docker 컨테이너를 실행하는 경우에는 네트워크 설정과 데이터베이스 연결 설정에 주의해야 합니다.
 
 만약 배포가 잘 되었지만 웹 애플리케이션에 접속이 안 되는 경우, 특히 다음과 같은 MySQL 연결 오류가 발생한다면:
@@ -277,3 +277,50 @@ Docker와 Django를 사용하여 애플리케이션을 배포하는 과정에서
    ```sql
    GRANT ALL PRIVILEGES ON database.* TO 'username'@'%' IDENTIFIED BY 'password';
    ```
+
+### 문제상황#2
+환경변수로 변경하는 작업 후 디비연결 문제 발생
+- 권한은 '%'로 전부 준 상황
+```py
+File "/usr/local/lib/python3.11/site-packages/MySQLdb/__init__.py", line 121, in Connect
+    return Connection(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/MySQLdb/connections.py", line 193, in __init__
+    super().__init__(*args, **kwargs2)
+django.db.utils.OperationalError: (1045, "Access denied for user 'myname'@'gateway' (using password: NO)")
+```
+아무리봐도 제대로 안들어가서 확인해보니 역시나 안들어감
+```sh
+root@17c95b5e78b0:/app# python manage.py shell
+Python 3.11.2 (main, Mar 23 2023, 17:12:29) [GCC 10.2.1 20210110] on linux
+Type "help", "copyright", "credits" or "license" for more information.
+(InteractiveConsole)
+>>> from django.conf import settings
+TABASES['default']['PASSWORD'])
+print(settings.DATABASES['default']['HOST'])
+print(settings.DATABASES['default']['PORT'])
+>>> print(settings.DATABASES['default']['PASSWORD'])
+None
+>>> print(settings.DATABASES['default']['HOST'])
+mysql.db.com
+>>> print(settings.DATABASES['default']['PORT'])
+13306
+```
+
+환경 변수 설정이 잘 안 들어가는 이유는 Jenkins 파이프라인에서 `export`를 통해 설정한 환경 변수가 각 스테이지에서 독립적으로 실행되는 쉘 스크립트에만 적용되기 때문입니다. 이러한 이유로 `export`로 설정한 환경 변수는 파이프라인의 다른 스테이지나 다음 단계에서는 사용할 수 없습니다.
+
+따라서, 환경 변수를 Docker 이미지 빌드 및 실행 시점에 명시적으로 전달해야 합니다. 예를 들어, `docker run` 명령어를 사용할 때 `-e` 옵션을 사용하여 환경 변수를 컨테이너에 전달할 수 있습니다.
+
+```groovy
+stage('Deploy to Docker Container') {
+    steps {
+        sh '''
+        docker stop django || true
+        docker rm django || true
+        docker run -d -p 8000:8000 --add-host $MY_DB_HOST -e "DB_PASSWORD=$DB_PASSWORD" -e "SECRET_KEY=$SECRET_KEY" --name django django_demo
+        '''
+    }
+}
+```
+
+이렇게 하면, Docker 컨테이너에서 실행되는 애플리케이션은 해당 환경 변수를 제대로 인식할 수 있습니다.
