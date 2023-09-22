@@ -7,7 +7,7 @@ pipeline {
     environment {
         DJANGO_SETTINGS_MODULE = 'django_demo.settings'
 
-        MY_DB_HOST = 'mysql.db.com:192.168.123.163'
+        // MY_DB_HOST = 'mysql.db.com:192.168.123.163'
         DB_PASSWORD = credentials('my-db-password')
         // DB_HOST = credentials('my-db-host')
         // DB_PORT = credentials('my-db-port')
