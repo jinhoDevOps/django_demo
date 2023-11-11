@@ -43,7 +43,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: don't run with debug turned on in production!
 # >>>>>>>>>>>>> move to `secrets.py`
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1','211.221.173.229','211.221.173.228',]
+ALLOWED_HOSTS = ['localhost', '127.0.0.1','211.221.173.229','211.221.173.228','49.1.50.21']
 
 import ipaddress
 # CIDR 표기법을 사용하여 특정 IP 범위에 대한 접근을 허용
