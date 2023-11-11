@@ -7,8 +7,8 @@ services:
     image: django_demo
     ports:
       - "8000:8000"
-    container_name: django
-    hostname: django
+    container_name: app
+    hostname: app
     extra_hosts:
       - "${MY_DB_HOST}"
     environment:
