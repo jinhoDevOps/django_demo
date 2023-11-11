@@ -77,7 +77,7 @@ pipeline {
                 sh '''
                 docker stop django || true
                 docker rm django || true
-                docker-compose up -d
+                docker compose up -d
                 '''
             }
         }
