@@ -47,10 +47,11 @@ pipeline {
         stage('Run Unit Tests') {  // 유닛 테스트를 실행하는 단계
             steps {
                 // 가상 환경을 활성화합니다. / Django 테스트를 실행합니다.
+                // export DB_PASSWORD=$(echo $DB_PASSWORD)
+                // export SECRET_KEY=$(echo $SECRET_KEY)
+                // export MY_DB_HOST=$(echo $MY_DB_HOST)
                 sh '''
-                export DB_PASSWORD=$(echo $DB_PASSWORD)
-                export SECRET_KEY=$(echo $SECRET_KEY)
-                export MY_DB_HOST=$(echo $MY_DB_HOST)
+
                 . myenv/bin/activate
                 python manage.py test
                 '''
@@ -69,9 +70,9 @@ pipeline {
                 // Jenkins에서 설정한 크레덴셜
                 // sh 'export DB_HOST = $(echo $DB_HOST)'
                 // sh 'export DB_PORT = $(echo $DB_PORT)'
-                sh 'export DB_PASSWORD=$(echo $DB_PASSWORD)'
-                sh 'export SECRET_KEY=$(echo $SECRET_KEY)'
-                sh 'export MY_DB_HOST=$(echo $MY_DB_HOST)'
+                // sh 'export DB_PASSWORD=$(echo $DB_PASSWORD)'
+                // sh 'export SECRET_KEY=$(echo $SECRET_KEY)'
+                // sh 'export MY_DB_HOST=$(echo $MY_DB_HOST)'
                 //  docker run -d -p 8000:8000 --add-host $MY_DB_HOST -e "DB_PASSWORD=$DB_PASSWORD" --name django django_demo
                 sh '''
                 docker stop django || true
