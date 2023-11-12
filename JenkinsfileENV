@@ -61,10 +61,26 @@ pipeline {
 
         stage('Build Docker Image') {  // 도커 이미지를 빌드하는 단계
             steps {
-                sh 'docker build -t django_demo .'  // 도커 이미지를 빌드합니다.
+                sh 'docker build -t jinhoops/django_demo .'  // 도커 이미지를 빌드합니다.
             }
         }
+        stage('Push to Docker Hub') {
+            steps {
+                script {
+                    // Docker Hub 크레덴셜 로드
+                    withCredentials([usernamePassword(credentialsId: 'docker-hub-credentials', passwordVariable: 'DOCKER_HUB_PASSWORD', usernameVariable: 'DOCKER_HUB_USERNAME')]) {
+                        // Docker Hub에 로그인
+                        sh "echo ${DOCKER_HUB_PASSWORD} | docker login -u ${DOCKER_HUB_USERNAME} --password-stdin"
 
+                        // 이미지 푸시
+                        sh 'docker push jinhoops/django_demo'
+
+                        // Docker Hub에서 로그아웃
+                        sh 'docker logout'
+                    }
+                }
+            }
+        }
         stage('Deploy to Docker Container') {  // 도커 컨테이너에 배포하는 단계
                 steps {
                 // Jenkins에서 설정한 크레덴셜
@@ -75,8 +91,8 @@ pipeline {
                 // sh 'export MY_DB_HOST=$(echo $MY_DB_HOST)'
                 //  docker run -d -p 8000:8000 --add-host $MY_DB_HOST -e "DB_PASSWORD=$DB_PASSWORD" --name django django_demo
                 sh '''
-                docker stop django || true
-                docker rm django || true
+                docker stop django_demo || true
+                docker rm django_demo || true
                 docker compose up -d
                 '''
             }

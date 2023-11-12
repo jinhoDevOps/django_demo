@@ -4,7 +4,7 @@ version: '3'
 
 services:
   django_app:
-    image: django_demo
+    image: jinhoops/django_demo
     ports:
       - "8000:8000"
     container_name: django_demo
