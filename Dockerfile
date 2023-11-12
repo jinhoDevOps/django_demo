@@ -13,5 +13,8 @@ RUN pip install --no-cache-dir -r requirements.txt
 # 모든 파일을 복사합니다.
 COPY . .
 
+# 8000포트를 엽니다
+EXPOSE 8000
+
 # 서버를 실행합니다.
 CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
